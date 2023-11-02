@@ -2,7 +2,7 @@ from cryptography.fernet import Fernet
 
 # Ejemplo de uso
 clave = "YFLP_NMQpMp4wTw50i5_94V_VSYyqVJ_VL9r13ak6cQ="
-texto_original = "100707423"
+texto_original = "143229910"
 
 def encrypt_text(text):
     # No vuelvas a definir clave, accede a la variable global
