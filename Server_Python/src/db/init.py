@@ -1,4 +1,6 @@
 from pymongo import MongoClient
+import sys
+sys.path.append('/home/esteban/Documents/U/Infra/Proyecto_final_Infra/Server_Python/src')
 from db.model.user_db import user_db
 
 from db.model.user import User
