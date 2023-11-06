@@ -8,7 +8,8 @@ from utilities.encription import decrypt_text
 #cap = cv2.VideoCapture(0)
 font = cv2.FONT_HERSHEY_PLAIN
  
-url='http://192.168.1.2/'
+#url='http://192.168.1.2/'
+url='http://192.168.218.84/'
 cv2.namedWindow("live transmission", cv2.WINDOW_AUTOSIZE)
  
 prev=""
@@ -16,7 +17,7 @@ pres=""
 action=False
 message=True
 while True:
-    img_resp=urllib.request.urlopen(url+'cam-hi.jpg')
+    img_resp=urllib.request.urlopen(url+'cam-mid.jpg')
     imgnp=np.array(bytearray(img_resp.read()),dtype=np.uint8)
     frame=cv2.imdecode(imgnp,-1)
     #_, frame = cap.read()

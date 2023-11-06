@@ -24,3 +24,6 @@ def replace_user(user: User):
         {"_id": user.id}, user_dict)
     return user_replaced
 
+def insert_many(users):
+  return collection.insert_many(users)
+
