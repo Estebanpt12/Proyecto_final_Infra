@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Consulta de Estudiante \n Universidad del Quindio</title>
+    <style>
+        body {
+            background-image: url(https://images2.alphacoders.com/132/1329895.png);
+
+            background-size: cover;
+
+            background-repeat: no-repeat;
+
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+    </style>
+</head>
+<body>
+    <h2>Consulta de Estudiante<h2>
+     <h2>Universidad del Quindio</h2>
+    </style>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <form action="procesar_consulta.php" method="post">
+        <label for="username">Username:</label>
+        <input type="text" name="username" required><br><br>
+
+        <label for="password">Contraseña:</label>
+        <input type="password" name="password" required><br><br>
+
+        <input type="submit" value="Login">
+
+        <button id="consultar">Descargar</button>
+            <div id="codigo-qr"></div>
+            <a id="descargar" style="display: none;" download="codigo-qr.png">Descargar Código QR</a>
+
+    </form>
+</body>
+</html>
