@@ -19,6 +19,13 @@ def find_user_by_documento(documento: int):
     else:
        return user
     
+def find_user_by_documento_contrasenia(documento: int, contrasenia: str):
+    user = collection.find_one({ "documento": documento, "contrasenia" : contrasenia })
+    if user is not None:
+      return(User(**user_db(user)))
+    else:
+       return user
+    
 def replace_user(user: User):
     user_dict = dict(user)
     del user_dict["id"]
