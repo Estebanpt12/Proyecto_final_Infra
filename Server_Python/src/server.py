@@ -46,7 +46,7 @@ while True:
             cv2.putText(frame, enter_user_with_qr(str(obj.data.decode('utf-8'))), (50, 50), font, 2,
                     (0, 255, 0), 3)
         except ResponseException as r:
-            cv2.putText(frame, r.args[0], (50, 50), font, 2,
+            cv2.putText(frame, str(r), (50, 50), font, 2,
                     (0, 0, 255), 3)
         cv2.imshow("live transmission", frame)
         message = False
@@ -60,7 +60,7 @@ while True:
             cv2.putText(frame, enter_user_with_qr(str(obj.data.decode('utf-8'))), (50, 50), font, 2,
                     (0, 255, 0), 3)
         except ResponseException as r:
-            cv2.putText(frame, r.args[0], (50, 50), font, 2,
+            cv2.putText(frame, str(r), (50, 50), font, 2,
                     (0, 0, 255), 3)
         cv2.imshow("live transmission", frame)
         message = False

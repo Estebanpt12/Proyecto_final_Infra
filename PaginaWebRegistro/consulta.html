@@ -1,38 +1,163 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
 <head>
-    <title>Consulta de Estudiante \n Universidad del Quindio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Registro</title>
     <style>
         body {
-            background-image: url(https://images2.alphacoders.com/132/1329895.png);
-
-            background-size: cover;
-
-            background-repeat: no-repeat;
-
-            font-family: 'Times New Roman', Times, serif;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
+        header {
+            background-color: #019833;
+            color: #fff;
+            display: flex;
+            /* Hacer que los elementos del header sean flexibles */
+            align-items: center;
+            /* Centrar verticalmente los elementos en el header */
+            padding: 10px;
+        }
+
+        header img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            /* Espacio entre la imagen y el texto en el header */
+        }
+
+        footer {
+            background-color: #8a8d8b;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 100px);
+        }
+
+        #registration-box {
+            background-color: #f2f2f2;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #registration-box h2 {
+            font-size: 24px;
+            margin: 0;
+            text-align: center;
+        }
+
+        #registration-box input[type="text"],
+        #registration-box input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        #registration-box button {
+            background-color: #019833;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        #registration-box button:hover {
+            background-color: #129c40;
+        }
     </style>
+    <script>
+        function enviarPeticion() {
+            const usuario = document.querySelector('input[type="text"]').value;
+            const contraseña = document.querySelector('input[type="password"]').value;
+
+            if (usuario.trim() === '' || contraseña.trim() === '') {
+                alert('Por favor, completa tanto el usuario como la contraseña.');
+            } else {
+
+                // Crear un objeto XMLHttpRequest
+                const xhr = new XMLHttpRequest();
+
+                // Configurar la solicitud
+                xhr.open('GET', 'http://localhost:8000/get_image/', true);
+                xhr.setRequestHeader('Authorization', 'Basic ' + btoa(usuario + ':' + contraseña));
+
+                // Definir lo que hacer cuando la solicitud esté lista
+                xhr.onload = function () {
+                    if (xhr.status === 403) {
+                        const response = JSON.parse(xhr.responseText);
+                        const detail = response.detail;
+                        alert(detail);
+                    } else if (xhr.status === 200) {
+                        // Crear una URL con la respuesta
+                        const blob = new Blob([xhr.response], { type: 'image/png' });
+                        const url = window.URL.createObjectURL(blob);
+
+                        // Crear un enlace para descargar la imagen
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'imagen.png';
+                        a.style.display = 'none';
+
+                        // Agregar el enlace al documento y hacer clic en él para iniciar la descarga
+                        document.body.appendChild(a);
+                        a.click();
+
+                        // Limpiar el enlace después de la descarga
+                        window.URL.revokeObjectURL(url);
+                    }
+                };
+
+                // Realizar la solicitud
+                xhr.send();
+            }
+        }
+    </script>
 </head>
+
 <body>
-    <h2>Consulta de Estudiante<h2>
-     <h2>Universidad del Quindio</h2>
-    </style>
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-    <form action="procesar_consulta.php" method="post">
-        <label for="username">Username:</label>
-        <input type="text" name="username" required><br><br>
+    <header>
+        <img src="./images/logo-universidad-del-quindio.png" alt="Icono" style="width: 50px; height: 50px;">
+        <!-- Reemplaza "tu_imagen.jpg" con la ruta de tu imagen -->
+    </header>
 
-        <label for="password">Contraseña:</label>
-        <input type="password" name="password" required><br><br>
+    <div id="registration-box">
+        <h2>Generar Codigo QR</h2>
+        <input type="text" placeholder="Usuario">
+        <input type="password" placeholder="Contraseña">
+        <button onclick="enviarPeticion()">Generar</button>
+    </div>
 
-        <input type="submit" value="Login">
-
-        <button id="consultar">Descargar</button>
-            <div id="codigo-qr"></div>
-            <a id="descargar" style="display: none;" download="codigo-qr.png">Descargar Código QR</a>
-
-    </form>
+    <footer>
+        Derechos reservados
+    </footer>
 </body>
+
 </html>
