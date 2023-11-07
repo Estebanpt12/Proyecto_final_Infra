@@ -1,5 +1,4 @@
 import qrcode
-import os
 
 #db.auth("nombre_de_usuario_admin", "contraseña_admin")
 
@@ -15,10 +14,3 @@ def generar_codigo_qr(texto, ruta_destino):
 
     img = qr.make_image(fill_color="black", back_color="white")
     img.save(ruta_destino)
-
-# Ejemplo de uso
-texto_a_codificar = "gAAAAABlPceSUmuy2tsTlZAoKNn2mYnIa7KPS3ZPZgTUW1zOTRvsBeokqrvcCxDI1O7sNViLWDiFfGna5mWRYdX3YSDl_cBJ_g=="
-ruta_destino_qr = "/home/esteban/Documents/U/Infra/Proyecto_final_Infra/Server_Python/src/images/codigo_qr.png"
-
-generar_codigo_qr(texto_a_codificar, ruta_destino_qr)
-print(f'Se ha generado el código QR en el archivo "{ruta_destino_qr}"')
