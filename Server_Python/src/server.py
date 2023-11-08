@@ -50,8 +50,6 @@ while True:
                     (0, 0, 255), 3)
         cv2.imshow("live transmission", frame)
         message = False
-    
-    key = cv2.waitKey(1)
 
     key = cv2.waitKey(1)
     if key == 32:

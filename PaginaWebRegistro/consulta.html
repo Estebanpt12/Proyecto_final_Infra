@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Registro</title>
+    <title>Generar QR</title>
+    <link rel="shortcut icon" href="./images/logo-universidad-del-quindio.png">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -101,51 +102,52 @@
             if (usuario.trim() === '' || contraseña.trim() === '') {
                 alert('Por favor, completa tanto el usuario como la contraseña.');
             } else {
+                const url = 'http://localhost:8000/get_image/';
+                const authHeader = 'Basic ' + btoa(usuario + ':' + contraseña);
 
-                // Crear un objeto XMLHttpRequest
-                const xhr = new XMLHttpRequest();
-
-                // Configurar la solicitud
-                xhr.open('GET', 'http://localhost:8000/get_image/', true);
-                xhr.setRequestHeader('Authorization', 'Basic ' + btoa(usuario + ':' + contraseña));
-
-                // Definir lo que hacer cuando la solicitud esté lista
-                xhr.onload = function () {
-                    if (xhr.status === 403) {
-                        const response = JSON.parse(xhr.responseText);
-                        const detail = response.detail;
-                        alert(detail);
-                    } else if (xhr.status === 200) {
-                        // Crear una URL con la respuesta
-                        const blob = new Blob([xhr.response], { type: 'image/png' });
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': authHeader
+                    }
+                })
+                    .then(response => {
+                        if (response.status === 403) {
+                            return response.json().then(data => {
+                                alert(data.detail);
+                            });
+                        } else if (response.status === 200) {
+                            return response.blob();
+                        } else {
+                            alert('Error desconocido');
+                        }
+                    })
+                    .then(blob => {
                         const url = window.URL.createObjectURL(blob);
 
-                        // Crear un enlace para descargar la imagen
                         const a = document.createElement('a');
                         a.href = url;
-                        a.download = 'imagen.png';
+                        a.download = 'codigo_qr_' + usuario + '.png';
                         a.style.display = 'none';
 
-                        // Agregar el enlace al documento y hacer clic en él para iniciar la descarga
                         document.body.appendChild(a);
                         a.click();
 
-                        // Limpiar el enlace después de la descarga
                         window.URL.revokeObjectURL(url);
-                    }
-                };
-
-                // Realizar la solicitud
-                xhr.send();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
             }
         }
+
     </script>
 </head>
 
 <body>
     <header>
-        <img src="./images/logo-universidad-del-quindio.png" alt="Icono" style="width: 50px; height: 50px;">
-        <!-- Reemplaza "tu_imagen.jpg" con la ruta de tu imagen -->
+        <img src="./images/logo-universidad-del-quindio.png" alt="Icono"
+            style="width: 50px; height: 50px; border-radius: 10px;">
     </header>
 
     <div id="registration-box">
@@ -156,7 +158,7 @@
     </div>
 
     <footer>
-        Derechos reservados
+        &copy; 2023 Universidad del Quindio
     </footer>
 </body>
 

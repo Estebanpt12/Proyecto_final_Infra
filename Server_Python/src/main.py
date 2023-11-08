@@ -26,6 +26,6 @@ async def get_image(credentials: HTTPBasicCredentials = Depends(security)):
     try:
         response = generate_qr_user(credentials.username, credentials.password)
         if os.path.isfile(response):
-            return FileResponse(response)
+            return FileResponse(response, media_type="image/png")
     except ResponseException as r:
         raise HTTPException(status_code=403, detail=str(r)) 
