@@ -7,10 +7,10 @@ from services.enter_service import *
 from exceptions.ResponseException import ResponseException
  
 #cap = cv2.VideoCapture(0)
-font = cv2.FONT_HERSHEY_PLAIN
+font = cv2.FONT_HERSHEY_COMPLEX
  
-#url='http://192.168.1.2/'
-url='http://192.168.218.84/'
+url='http://192.168.1.9/'
+#url='http://192.168.218.84/'
 cv2.namedWindow("live transmission", cv2.WINDOW_AUTOSIZE)
  
 prev=""
@@ -34,8 +34,8 @@ while True:
             print("Type:",obj.type)
             print("Data: ",str(obj.data.decode('utf-8')))
             prev=pres
-        cv2.putText(frame, "Documento Tomado", (50, 50), font, 2,
-                    (255, 0, 0), 3)
+        cv2.putText(frame, "Documento Tomado", (50, 50), font, 1.2,
+                    (0, 165, 255), 3)
  
     cv2.imshow("live transmission", frame)
  
@@ -43,23 +43,20 @@ while True:
     if key == 13:
         ##Calldb
         try:
-            cv2.putText(frame, enter_user_with_qr(str(obj.data.decode('utf-8'))), (50, 50), font, 2,
+            cv2.putText(frame, enter_user_with_qr(str(obj.data.decode('utf-8'))), (50, 100), font, 1.2,
                     (0, 255, 0), 3)
         except ResponseException as r:
-            cv2.putText(frame, str(r), (50, 50), font, 2,
-                    (0, 0, 255), 3)
+            cv2.putText(frame, str(r), (50, 100), font, 1.2, (0, 0, 255), 3)
         cv2.imshow("live transmission", frame)
         message = False
-
-    key = cv2.waitKey(1)
+        
     if key == 32:
         ##Calldb
         try:
-            cv2.putText(frame, enter_user_with_qr(str(obj.data.decode('utf-8'))), (50, 50), font, 2,
+            cv2.putText(frame, leave_user_with_qr(str(obj.data.decode('utf-8'))), (50, 100), font, 1.2,
                     (0, 255, 0), 3)
         except ResponseException as r:
-            cv2.putText(frame, str(r), (50, 50), font, 2,
-                    (0, 0, 255), 3)
+            cv2.putText(frame, str(r), (50, 100), font, 1.2, (0, 0, 255), 3)
         cv2.imshow("live transmission", frame)
         message = False
     

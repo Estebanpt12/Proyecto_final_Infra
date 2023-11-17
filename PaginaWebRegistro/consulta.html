@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generar QR</title>
     <link rel="shortcut icon" href="./images/logo-universidad-del-quindio.png">
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -95,12 +98,30 @@
         }
     </style>
     <script>
+        function mostrarMensaje(mensaje, tipo) {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000"
+            };
+
+            if (tipo === 'exito') {
+                toastr.success(mensaje, 'Éxito');
+            } else if (tipo === 'error') {
+                toastr.error(mensaje, 'Error');
+            }
+        }
+
         function enviarPeticion() {
             const usuario = document.querySelector('input[type="text"]').value;
             const contraseña = document.querySelector('input[type="password"]').value;
 
             if (usuario.trim() === '' || contraseña.trim() === '') {
-                alert('Por favor, completa tanto el usuario como la contraseña.');
+                mostrarMensaje('Por favor, completa tanto el usuario como la contraseña.', 'error');
             } else {
                 const url = 'http://localhost:8000/get_image/';
                 const authHeader = 'Basic ' + btoa(usuario + ':' + contraseña);
@@ -112,14 +133,12 @@
                     }
                 })
                     .then(response => {
-                        if (response.status === 403) {
-                            return response.json().then(data => {
-                                alert(data.detail);
-                            });
-                        } else if (response.status === 200) {
+                        if (response.status === 200) {
                             return response.blob();
                         } else {
-                            alert('Error desconocido');
+                            return response.json().then(data => {
+                                throw new Error(data.detail);
+                            });
                         }
                     })
                     .then(blob => {
@@ -134,13 +153,14 @@
                         a.click();
 
                         window.URL.revokeObjectURL(url);
+                        mostrarMensaje('Descarga exitosa', 'exito');
                     })
                     .catch(error => {
                         console.error('Error:', error);
+                        mostrarMensaje(error.message, 'error');
                     });
             }
         }
-
     </script>
 </head>
 
@@ -152,11 +172,12 @@
 
 
     <div id="registration-box">
-        <h2>Generar Codigo QR</h2>
+        <h2>Generar Código QR</h2>
         <input type="text" placeholder="Usuario">
         <input type="password" placeholder="Contraseña">
         <button onclick="enviarPeticion()">Generar</button>
     </div>
+    <div id="mensaje"></div>
 
     <footer>
         &copy; 2023 - Universidad del Quindio

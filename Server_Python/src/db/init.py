@@ -29,10 +29,13 @@ def find_user_by_documento_contrasenia(documento: int, contrasenia: str):
 def replace_user(user: User):
     user_dict = dict(user)
     del user_dict["id"]
+    user_dict["estaLogueado"] = user.esta_logueado
+    del user_dict["esta_logueado"]
     user_replaced = collection.find_one_and_replace(
         {"_id": user.id}, user_dict)
     return user_replaced
 
 def insert_many(users):
+  collection.delete_many({})
   return collection.insert_many(users)
 

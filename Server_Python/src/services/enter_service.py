@@ -30,12 +30,12 @@ def leave_user_with_qr(document_encrypted: str):
   user = find_user_by_documento(int(document))
 
   if user is None:
-    raise ResponseException("El usuario ya se encuentra logueado")
+    raise ResponseException("Usuario no encontrado")
   
   if not user.esta_logueado:
-    raise ResponseException("QR invalido")
+    raise ResponseException("El usuario no se encuentra logueado")
   
-  user.esta_logueado = True
+  user.esta_logueado = False
   replace_user(user)
 
   return "Sesion cerrada de usuario"
